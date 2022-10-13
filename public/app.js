@@ -10,7 +10,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-console.log(firebase);
 const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
 const elements = {};
@@ -20,6 +19,8 @@ elements.array = [
   "whenSignedIn",
   "whenSignedOut",
   "userDetails",
+  "thingslist",
+  "createThing",
 ];
 
 elements.array.forEach((elementName) => {
@@ -33,11 +34,25 @@ auth.onAuthStateChanged((user) => {
   if (user) {
     elements.whenSignedIn.hidden = false;
     elements.whenSignedOut.hidden = true;
-    elements.userDetails.innerHTML = `Welcome ${user.displayName}`;
+    elements.userDetails.innerHTML = `Welcome ${user.displayName}!`;
   } else {
     elements.whenSignedIn.hidden = true;
     elements.whenSignedOut.hidden = false;
   }
 });
 
-console.log(elements);
+const db = firebase.firestore();
+let dbLocationReference = db.collection("stuff");
+let unsubscribe;
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    elements.createThing.onclick = () => {
+      let docRef = dbLocationReference.doc();
+      docRef.set({
+        uid: user.uid,
+        name: `test${Math.random().toFixed(5)}`,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    };
+  }
+});
