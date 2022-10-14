@@ -21,6 +21,7 @@ elements.array = [
   "userDetails",
   "thingslist",
   "createThing",
+  "createThingB",
 ];
 
 elements.array.forEach((elementName) => {
@@ -45,14 +46,21 @@ const db = firebase.firestore();
 let dbLocationReference = db.collection("notthings");
 let unsubscribe;
 auth.onAuthStateChanged((user) => {
-
   if (user) {
     elements.createThing.onclick = () => {
       let docRef = dbLocationReference.doc(user.uid);
       docRef.set({
         uid: user.uid,
-        name: `test${Math.random().toFixed(5)}`,
+        name: `test${Math.random().toFixed(5)}bob`,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    };
+    elements.createThingB.onclick = () => {
+      let docRef = dbLocationReference.doc(user.uid);
+      docRef.update({
+        uid: user.uid,
+
+        bob: "bob",
       });
     };
   }
