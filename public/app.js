@@ -42,9 +42,10 @@ auth.onAuthStateChanged((user) => {
 });
 
 const db = firebase.firestore();
-let dbLocationReference = db.collection("stuff");
+let dbLocationReference = db.collection("things");
 let unsubscribe;
 auth.onAuthStateChanged((user) => {
+
   if (user) {
     elements.createThing.onclick = () => {
       let docRef = dbLocationReference.doc();
