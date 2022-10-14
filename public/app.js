@@ -53,6 +53,7 @@ auth.onAuthStateChanged((user) => {
         uid: user.uid,
         name: `test${Math.random().toFixed(5)}bob`,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        bob: ["Fred", "Mike"],
       });
     };
     elements.createThingB.onclick = () => {
@@ -60,7 +61,7 @@ auth.onAuthStateChanged((user) => {
       docRef.update({
         uid: user.uid,
 
-        bob: "bob",
+        bob: firebase.firestore.FieldValue.arrayUnion("greater_virginia"),
       });
     };
   }
