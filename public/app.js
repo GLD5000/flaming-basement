@@ -52,16 +52,15 @@ auth.onAuthStateChanged((user) => {
       docRef.set({
         uid: user.uid,
         name: `test${Math.random().toFixed(5)}bob`,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        bob: ["Fred", "Mike"],
-      });
+        updated: firebase.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
     };
     elements.createThingB.onclick = () => {
       let docRef = dbLocationReference.doc(user.uid);
       docRef.update({
-        uid: user.uid,
-
-        bob: firebase.firestore.FieldValue.arrayUnion("greater_virginia"),
+        bob: firebase.firestore.FieldValue.arrayUnion({
+          Content: "greater_virginia" + Math.random().toFixed(3),
+        }),
       });
     };
   }
