@@ -47,8 +47,8 @@ let dbLocationReference = db.collection("notthings");
 let unsubscribe;
 auth.onAuthStateChanged((user) => {
   if (user) {
+    const docRef = dbLocationReference.doc(user.uid);
     elements.createThing.onclick = () => {
-      let docRef = dbLocationReference.doc(user.uid);
       docRef.set({
         uid: user.uid,
         name: `test${Math.random().toFixed(5)}bob`,
@@ -56,12 +56,16 @@ auth.onAuthStateChanged((user) => {
       }, { merge: true });
     };
     elements.createThingB.onclick = () => {
-      let docRef = dbLocationReference.doc(user.uid);
       docRef.update({
         bob: firebase.firestore.FieldValue.arrayUnion({
           Content: "greater_virginia" + Math.random().toFixed(3),
         }),
+      }).then(async () => {
+        const doc = await docRef.get()
+      console.log(doc.data().bob.map(x => x.
+        Content));
       });
     };
   }
 });
+
